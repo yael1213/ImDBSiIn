@@ -1,0 +1,42 @@
+| yael1515$act4-n3   |
+| yael1515$act5-n1   |
+| yael1515$act5-n2   |
+| yael1515$act5-n3   |
+| yael1515$act6-n1   |
+| yael1515$act6-n2   |
+| yael1515$act6-n3   |
+| yael1515$act6-nn2  |
+| yael1515$act7-n1   |
+| yael1515$act7-n2   |
+| yael1515$act7-n3   |
+| yael1515$act8-n1   |
+| yael1515$act8-n2   |
+| yael1515$default   |
++--------------------+
+30 rows in set (0.07 sec)
+mysql> use yael1515$act8-n2;
+Database changed
+mysql> CREATE TABLE muestra (
+    ->     valor INTEGER
+    -> );  
+Query OK, 0 rows affected (0.03 sec)
+mysql> 
+mysql> INSERT INTO muestra VALUES
+    ->  (1),(1),(2),
+    ->  (3),(3),(4);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> Select 
+    ->     DISTINCT(valor)
+    -> From muestra;
++-------+
+| valor |
++-------+
+|     1 |
+|     2 |
+|     3 |
+|     4 |
++-------+
+4 rows in set (0.07 sec)
+
