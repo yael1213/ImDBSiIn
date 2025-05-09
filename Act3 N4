@@ -1,0 +1,27 @@
+    ->     PRIMARY KEY(Flujo)
+    -> );
+ERROR 1050 (42S01): Table 'TRABAJO' already exists
+mysql> 
+mysql> 
+mysql> INSERT INTO TRABAJO
+    -> VALUES 
+    -> ('Alta de usuarios',NULL,NULL,NULL),
+    -> ('Baja de usuario', NULL, 1, 1),
+    -> ('Nueva orden', 1, NULL, NULL),
+    -> ('Elimina orden', NULL, NULL, NULL);
+Query OK, 4 rows affected, 3 warnings (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 3
+mysql>     
+mysql> SELECT Flujo, 
+    ->        (Caso_1 + Caso_2 + Caso_3) AS Aprovado
+    -> FROM TRABAJO;
++------------------+----------+
+| Flujo            | Aprovado |
++------------------+----------+
+| Alta de usuarios |        0 |
+| Baja de usuario  |        2 |
+| Elimina orden    |        0 |
+| Nueva orden      |        1 |
++------------------+----------+
+4 rows in set (0.00 sec)
+mysql> 
