@@ -1,0 +1,95 @@
+show databases;
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 47393062
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| yael1515$ACT3-N3   |
+| yael1515$Join      |
+| yael1515$act1      |
+| yael1515$act1-2    |
+| yael1515$act1-n1   |
+| yael1515$act1-n3   |
+| yael1515$act2-n1   |
+| yael1515$act2-n2   |
+| yael1515$act2-n3   |
+| yael1515$act3-n1   |
+| yael1515$act3-n2   |
+| yael1515$act3-n3   |
+| yael1515$act4-n1   |
+| yael1515$act4-n2   |
+| yael1515$default   |
++--------------------+
+17 rows in set (0.06 sec)
+mysql> use yael1515$act4-n2;
+Database changed
+mysql> CREATE TABLE Inventario (
+    ->     Fecha varchar(18) NOT NULL,
+    ->     Ajuste int NOT NULL,
+    ->     PRIMARY KEY(Fecha,Ajuste)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+mysql> 
+mysql> INSERT INTO Inventario Values ('03/01/2025',100),
+    -> ('04/01/2025',75), ('05/01/2025',-150),
+    -> ('06/01/2025',50),('07/01/2025',-70);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> SET  @Inventario = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> SELECT  Fecha, Ajuste,
+    ->     @Inventario := @Inventario + Ajuste AS Inventario
+    -> FROM 
+    ->     Inventario
+    -> ORDER BY 
+    ->     Fech
+    -> ;
+ERROR 1054 (42S22): Unknown column 'Fech' in 'order clause'
+mysql> ^C^C
+
+^C
+mysql> CREATE TABLE Inventario (
+    ->     Fecha varchar(18) NOT NULL,
+    ->     Ajuste int NOT NULL,
+    ->     PRIMARY KEY(Fecha,Ajuste)
+    -> );
+ERROR 1050 (42S01): Table 'Inventario' already exists
+mysql> 
+mysql> INSERT INTO Inventario Values ('03/01/2025',100),
+    -> ('04/01/2025',75), ('05/01/2025',-150),
+    -> ('06/01/2025',50),('07/01/2025',-70);
+ERROR 1062 (23000): Duplicate entry '03/01/2025-100' for key 'Inventario.PRIMARY'
+mysql> 
+mysql> SET  @Inventario = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> SELECT  Fecha, Ajuste,
+    ->     @Inventario := @Inventario + Ajuste AS Inventario
+    -> FROM 
+    ->     Inventario
+    -> ORDER BY 
+    ->     Fecha;
++------------+--------+------------+
+| Fecha      | Ajuste | Inventario |
++------------+--------+------------+
+| 03/01/2025 |    100 |        100 |
+| 04/01/2025 |     75 |        175 |
+| 05/01/2025 |   -150 |         25 |
+| 06/01/2025 |     50 |         75 |
+| 07/01/2025 |    -70 |          5 |
++------------+--------+------------+
+5 rows in set, 1 warning (0.00 sec)
