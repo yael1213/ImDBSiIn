@@ -1,0 +1,73 @@
+Your MySQL connection id is 47419390
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| yael1515$ACT3-N3   |
+| yael1515$Join      |
+| yael1515$act1      |
+| yael1515$act1-2    |
+| yael1515$act1-n1   |
+| yael1515$act1-n3   |
+| yael1515$act2-n1   |
+| yael1515$act2-n2   |
+| yael1515$act2-n3   |
+| yael1515$act3-n1   |
+| yael1515$act3-n2   |
+| yael1515$act3-n3   |
+| yael1515$act4-n1   |
+| yael1515$act4-n2   |
+| yael1515$act4-n3   |
+| yael1515$act5-n1   |
+| yael1515$act5-n2   |
+| yael1515$act5-n3   |
+| yael1515$act6-n1   |
+| yael1515$act6-n2   |
+| yael1515$act6-n3   |
+| yael1515$act6-nn2  |
+| yael1515$act7-n1   |
+| yael1515$default   |
++--------------------+
+26 rows in set (6.47 sec)
+mysql> use yael1515$act7-n1;
+Database changed
+mysql> 
+mysql> CREATE TABLE Productos2 (
+    ->     Id_Producto int NOT NULL,
+    ->     Fecha varchar(15) NOT NULL,
+    ->     Precio float NOT NULL,
+    ->     Primary key(Id_Producto,Fecha)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+mysql> INSERT INTO Productos2 Values
+    -> (1001, '01-01-2025', 19.99), (1001, '04-15-2025', 59.99), (1001, '06-08-2025', 79.99),
+    -> (2002, '04-17-2025', 39.99), (2002, '05-19-2025', 59.99);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> SELECT Id_Producto, Fecha, Precio
+    -> FROM Productos2
+    -> WHERE (Id_Producto, Fecha) IN (
+    ->     SELECT Id_Producto, MAX(Fecha)
+    ->     FROM Productos2
+    ->     GROUP BY Id_Producto
+    -> );
++-------------+------------+--------+
+| Id_Producto | Fecha      | Precio |
++-------------+------------+--------+
+|        1001 | 06-08-2025 |  79.99 |
+|        2002 | 05-19-2025 |  59.99 |
++-------------+------------+--------+
+2 rows in set (0.01 sec)
+mysql> 
