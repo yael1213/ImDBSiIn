@@ -1,0 +1,111 @@
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| yael1515$Join      |
+| yael1515$act1      |
+| yael1515$act1-2    |
+| yael1515$act1-n1   |
+| yael1515$act1-n3   |
+| yael1515$act2-n1   |
+| yael1515$act2-n2   |
+| yael1515$act2-n3   |
+| yael1515$default   |
++--------------------+
+11 rows in set (0.10 sec)
+mysql> use| yael1515$act2-n3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '| yael1515$act2-n3'
+ at line 1
+mysql> use  yael1515$act2-n3;
+Database changed
+mysql> CREATE TABLE Mision (
+    ->     Id_Candidato int(18) NOT NULL,
+    ->     Descripcion varchar(14) NOT NULL,
+    ->     PRIMARY KEY(Id_Candidato,Descripcion)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+mysql> 
+mysql> INSERT INTO
+    ->  Mision
+    ->  values
+    -> (1001,'Geólogo'),
+    -> 
+    -> (1001,'Astrónomo'),
+    -> (1001, 'Bioquímico'),
+    -> 
+    -> (1001, 'Técnico'),
+    -> (2002, 'Cirujano'),
+    -> 
+    -> (2002, 'Mecánico'),
+    -> (2002, 'Geólogo'),
+    -> 
+    -> (3003, 'Geólogo'),
+    -> (3003, 'Astrónomo'),
+    -> 
+    -> (4004, 'Ingeniero');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> SELECT  Id_Candidato
+    -> FROM Mision
+    -> WHERE Descripcion IN ('Geólogo', 'Astrónomo', 'Bioquímico')
+    -> GROUP BY
+    ->     Id_Candidato
+    -> HAVING;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 6
+mysql> COUNT(DISTINCT Descripcion) = 3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'COUNT(DISTINCT Descripcion) = 3' at line 1
+mysql> 
+
+^C
+mysql> CREATE TABLE Mision (
+    ->     Id_Candidato int(18) NOT NULL,
+    ->     Descripcion varchar(14) NOT NULL,
+    ->     PRIMARY KEY(Id_Candidato,Descripcion)
+    -> );
+ERROR 1050 (42S01): Table 'Mision' already exists
+mysql> 
+mysql> INSERT INTO
+    ->  Mision
+    ->  values
+    -> (1001,'Geólogo'),
+    -> 
+    -> (1001,'Astrónomo'),
+    -> (1001, 'Bioquímico'),
+    -> 
+    -> (1001, 'Técnico'),
+    -> (2002, 'Cirujano'),
+    -> 
+    -> (2002, 'Mecánico'),
+    -> (2002, 'Geólogo'),
+    -> 
+    -> (3003, 'Geólogo'),
+    -> (3003, 'Astrónomo'),
+    -> (4004, 'Ingeniero');
+ERROR 1062 (23000): Duplicate entry '1001-Geólogo' for key 'Mision.PRIMARY'
+mysql> 
+mysql> SELECT
+    ->     Id_Candidato
+    -> FROM
+    ->     Mision
+    -> WHERE
+    ->     Descripcion IN ('Geólogo', 'Astrónomo', 'Bioquímico')
+    -> GROUP BY
+    ->     Id_Candidato
+    -> HAVING
+    -> COUNT(DISTINCT Descripcion) = 3;
++--------------+
+| Id_Candidato |
++--------------+
+|         1001 |
++--------------+
+1 row in set (0.00 sec)
+
