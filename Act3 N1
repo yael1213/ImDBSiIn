@@ -1,0 +1,101 @@
+sWelcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 47378429
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| yael1515$Join      |
+| yael1515$act1      |
+| yael1515$act1-2    |
+| yael1515$act1-n1   |
+| yael1515$act1-n3   |
+| yael1515$act2-n1   |
+| yael1515$act2-n2   |
+| yael1515$act2-n3   |
+| yael1515$act3-n1   |
+| yael1515$default   |
++--------------------+
+12 rows in set (0.06 sec)
+mysql> use yael1515$act3-n1;
+Database changed
+mysql> CREATE TABLE Licencias (
+    ->     Id_Empleado int(18) NOT NULL,
+    ->     Licencia Varchar(14) NOT NULL,
+    ->     PRIMARY KEY(Id_Empleado,Licencia)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+mysql> 
+mysql> INSERT INTO Licencias VALUES
+    -> (1001, 'Tipo A'), (1001, 'Tipo B'),
+    ->  (1001, 'Tipo C'),  (2002, 'Tipo A'),
+    ->   (2002, 'Tipo B'),   (2002, 'Tipo C'),
+    ->     (3003, 'Tipo A'), (3003, 'Tipo D'),
+    ->       (4004, 'Tipo A'),(4004, 'Tipo B'),
+    ->        (4004, 'Tipo D'), (5005, 'Tipo A'),
+    ->          (5005, 'Tipo B'),(5005, 'Tipo D');
+Query OK, 14 rows affected (0.01 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> SELECT  l1.Id_Empleado AS Id_Empleado_1, l2.Id_Empleado AS Id_Empleado_2,
+    ->     COUNT(*) AS Coincidencias
+    -> FROM Licencias l1
+    -> JOIN Licencias l2
+    -> ON  l1.Licencia = l2.Licencia
+    -> AND  l1.Id_Empleado != l2.Id_Empleado
+    -> GROUP BY  l1.Id_Empleado, l2.Id_Empleado
+    -> HAVING oincidencias = 3;
+ERROR 1054 (42S22): Unknown column 'oincidencias' in 'having clause'
+mysql> 
+
+^C
+mysql> CREATE TABLE Licencias (
+    ->     Id_Empleado int(18) NOT NULL,
+    ->     Licencia Varchar(14) NOT NULL,
+    ->     PRIMARY KEY(Id_Empleado,Licencia)
+    -> );
+ERROR 1050 (42S01): Table 'Licencias' already exists
+mysql> 
+mysql> INSERT INTO Licencias VALUES
+    -> (1001, 'Tipo A'), (1001, 'Tipo B'),
+    ->  (1001, 'Tipo C'),  (2002, 'Tipo A'),
+    ->   (2002, 'Tipo B'),   (2002, 'Tipo C'),
+    ->     (3003, 'Tipo A'), (3003, 'Tipo D'),
+    ->       (4004, 'Tipo A'),(4004, 'Tipo B'),
+    ->        (4004, 'Tipo D'), (5005, 'Tipo A'),
+    -> (5005, 'Tipo B'),(5005, 'Tipo D');
+ERROR 1062 (23000): Duplicate entry '1001-Tipo A' for key 'Licencias.PRIMARY'
+mysql> 
+mysql> SELECT 
+    ->     l1.Id_Empleado AS Id_Empleado_1,
+    ->     l2.Id_Empleado AS Id_Empleado_2,
+    ->     COUNT(*) AS Coincidencias
+    -> FROM
+    ->     Licencias l1
+    -> JOIN
+    ->     Licencias l2
+    -> ON 
+    ->     l1.Licencia = l2.Licencia
+    -> AND 
+    ->     l1.Id_Empleado != l2.Id_Empleado
+    -> GROUP BY 
+    ->     l1.Id_Empleado, l2.Id_Empleado
+    -> HAVING 
+    ->     Coincidencias = 3;
++---------------+---------------+---------------+
+| Id_Empleado_1 | Id_Empleado_2 | Coincidencias |
++---------------+---------------+---------------+
+|          2002 |          1001 |             3 |
+|          1001 |          2002 |             3 |
+|          5005 |          4004 |             3 |
+|          4004 |          5005 |             3 |
++---------------+---------------+---------------+
+4 rows in set (0.00 sec)
