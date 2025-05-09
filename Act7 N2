@@ -1,0 +1,41 @@
+show Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 47421384
+Server version: 8.0.40 Source distribution
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| yael1515$ACT3-N3   |
+| yael1515$Join      |
+| yael1515$act1      |
+| yael1515$act1-2    |
+| yael1515$act1-n1   |
+| yael1515$act1-n3   |
+| yael1515$act2-n1   |
+| yael1515$act2-n2   |
+| yael1515$act2-n3   |
+| yael1515$act3-n1   |
+| yael1515$act3-n2   |
+| yael1515$act3-n3   |
+| yael1515$act4-n1   |
+| yael1515$act4-n2   |
+| yael1515$act4-n3   |
+| yael1515$act5-n1   |
+| yael1515$act5-n2   |
+| yael1515$act5-n3   |
+| yael1515$act6-n1   |
+| yael1515$act6-n2   |
+| yael1515$act6-n3   |
+| yael1515$act6-nn2  |
+| yael1515$act7-n1   |
+| yael1515$act7-n2   |
+| yael1515$default   |
++--------------------+
+27 rows in set (0.13 sec)
