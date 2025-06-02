@@ -1,0 +1,120 @@
+show databases;
++-----------------------+
+| Database              |
++-----------------------+
+| information_schema    |
+| performance_schema    |
+| yael1515$ACT3-N3      |
+| yael1515$Agrupaciones |
+| yael1515$Join         |
+| yael1515$act1         |
+| yael1515$act1-2       |
+| yael1515$act1-n1      |
+| yael1515$act1-n3      |
+| yael1515$act2-n1      |
+| yael1515$act2-n2      |
+| yael1515$act2-n3      |
+| yael1515$act3-n1      |
+| yael1515$act3-n2      |
+| yael1515$act3-n3      |
+| yael1515$act4-n1      |
+| yael1515$act4-n2      |
+| yael1515$act4-n3      |
+| yael1515$act5-n1      |
+| yael1515$act5-n2      |
+| yael1515$act5-n3      |
+| yael1515$act6-n1      |
+| yael1515$act6-n2      |
+| yael1515$act6-n3      |
+| yael1515$act6-nn2     |
+| yael1515$act7-n1      |
+| yael1515$act7-n2      |
+| yael1515$act7-n3      |
+| yael1515$act8-n1      |
+| yael1515$act8-n2      |
+| yael1515$act8-n3      |
+| yael1515$default      |
++-----------------------+
+32 rows in set (0.10 sec)mysql> Agrupaciones ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syn
+tax to use near 'Agrupaciones' at line 1
+mysql> 
+^C
+mysql> use yael1515$Agrupaciones;
+Database changed
+mysql> CREATE TABLE AGRUPACION (
+    ->     Paso INT(16) NOT NULL,
+    ->     Estado VARCHAR(16) NOT NULL,
+    ->     PRIMARY  KEY(Paso, Estado)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+mysql> 
+mysql> 
+mysql> INSERT INTO
+    -> AGRUPACION
+    -> VALUES
+    -> (1, 'Paso'),  (2, 'Paso'),
+    -> (3, 'Paso'),  (4, 'Paso'),
+    -> (5, 'Fallo'),  (6, 'Fallo'),
+    -> (7, 'Fallo'),  (8, 'Fallo'),
+    -> (9, 'Fallo'),   (10, 'Paso'),
+    -> (11, 'Paso'),  (12, 'Paso');
+Query OK, 12 rows affected (0.01 sec)
+Records: 12  Duplicates: 0  Warnings: 0mysql> 
+mysql> 
+mysql> SELECT 
+    ->   MIN  (Paso) AS `Paso Min`,
+    ->   MAX  (Paso) AS `Paso Max`,  Estado,
+    ->   COUNT(*) AS Cuenta
+    -> FROM (
+    ->   SELECT 
+    ->     Paso,  Estado,
+    ->     Paso - ROW_NUMBER() OVER (PARTITION BY Estado ORDER BY Paso) AS grupo
+    ->   FROM AGRUPACION
+    -> ) AS agrupado
+    -> GROUP BY    Estado,   grupo
+    -> ORDER BY `Paso Min`;
+ERROR 1630 (42000): FUNCTION yael1515$Agrupaciones.MIN does not exist. Check the 'Function Name Parsing and Resolution' section in the Ref
+erence Manual
+mysql> 
+^C
+mysql> CREATE TABLE AGRUPACION (
+    ->     Paso INT(16) NOT NULL,
+    ->     Estado VARCHAR(16) NOT NULL,
+    ->     PRIMARY  KEY(Paso, Estado)
+    -> );
+ERROR 1050 (42S01): Table 'AGRUPACION' already exists
+mysql> 
+mysql> 
+mysql> INSERT INTO
+    -> AGRUPACION
+    -> VALUES
+    -> (1, 'Paso'),  (2, 'Paso'),
+    -> (3, 'Paso'),  (4, 'Paso'),
+    -> (5, 'Fallo'),  (6, 'Fallo'),
+    -> (7, 'Fallo'),  (8, 'Fallo'),
+    -> (9, 'Fallo'),   (10, 'Paso'),
+    -> (11, 'Paso'),  (12, 'Paso');
+ERROR 1062 (23000): Duplicate entry '1-Paso' for key 'AGRUPACION.PRIMARY'
+mysql> 
+mysql> 
+mysql> SELECT 
+    ->   MIN(Paso) AS `Paso Min`,
+    ->   MAX(Paso) AS `Paso Max`,  Estado,
+    ->   COUNT(*) AS Cuenta
+    -> FROM (
+    ->   SELECT 
+    ->     Paso,  Estado,
+    ->     Paso - ROW_NUMBER() OVER (PARTITION BY Estado ORDER BY Paso) AS grupo
+    ->   FROM AGRUPACION -> ) AS agrupado
+    -> GROUP BY Estado, grupo
+    -> ORDER BY `Paso Min`;
++----------+----------+--------+--------+
+| Paso Min | Paso Max | Estado | Cuenta |
++----------+----------+--------+--------+
+|        1 |        4 | Paso   |      4 |
+|        5 |        9 | Fallo  |      5 |
+|       10 |       12 | Paso   |      3 |
++----------+----------+--------+--------+
+3 rows in set (0.01 sec)
+mysql> 
